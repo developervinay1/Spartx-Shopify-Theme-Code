@@ -1,0 +1,53 @@
+<div class="container my-5">
+	{% form 'cart', cart  %}
+		{% if cart.empty? %}
+			<div class="row">
+				<div class="col-md-6 col-lg-5 col-xl-6 col-12 text-start">
+					<p class="oswald">No Items In Cart</p>
+				</div>
+				<div class="col-md-6 text-end">
+					<a href="{{ routes.collections_url }}" class="text-danger underline oswald">Shop Now</a>
+				</div>
+			</div>
+		{% else %}
+			<div class="row gap-sm-2 justify-sm-content-between">
+				<div class="row">
+					<div class="col-md-6 col-lg-5 col-xl-6 col-12 text-start">
+						<p class="oswald">Cart / Item in Cart {{ cart.item_count }}</p>
+					</div>
+					<div class="col-md-6 text-end">
+						<a href="{{ routes.collection_url }}" class="text-primary text-end underline oswald">Shop Now</a>
+					</div>
+				</div>
+				{% for item in cart.items %}
+					<div class="mx-md-1 my-3 my-sm-0 my-md-3 p-0 card my-2 col-12 col-sm-5 mx-sm-0 col-md-3">
+						<img src="{{ item.image | img_url: 'master' }}"
+						     class="card-img-top cart_image" alt="...">
+						<div class="card-body">
+							<h5 class="card-title oswald">{{ item.title }}</h5>
+							<div class="mt-3">
+								<h6 class="card-text mt-2">Price: {{ item.price | money }}</h6>
+								<h6 class="card-text mt-2">Quantity: {{ item.quantity }}</h6>
+								<h6 class="card-text mt-2">Total Price: {{ item.final_line_price | money }}</h6>
+								<a class="text-danger oswald" href="{{ item.url_to_remove }}">
+								Remove
+								</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="row justify-content-end">
+				<div class="col-md-5 card mt-5">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">SubTotal: {{ cart.items_subtotal_price | money }}</li>
+						<li class="list-group-item">Items Count: {{ cart.item_count }}</li>
+						<li class="list-group-item">Total: {{ cart.total_price | money }}</li>
+					</ul>
+					<button type="submit" name="checkout" class="btn btn-dark w-100 mt-3 mb-3">Checkout</button>
+				</div>
+			</div>
+
+		{% endif %}
+	{% endform %}
+</div>

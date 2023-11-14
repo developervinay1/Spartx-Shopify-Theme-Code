@@ -1,0 +1,76 @@
+<div class="container-fluid my-5">
+	<div class="container" style="background-color: black">
+		<div class="row">
+			<div class="col-md-4 p-5">
+				<h1 class="oswald text-white">{{ section.settings.section_name }}</h1>
+			</div>
+			<div class="col-md-4 column_mobile_tc">
+				<a href="{{ section.settings.collection_1_url }}">
+					{% if section.settings.collection_1_image == blank %}
+						<img class="img-fluid" src="https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/sports-wear-store-more-category-img-1.jpg"  alt="{{  section.settings.collection_name_1 }}"/>
+					{% else %}
+						<img class="img-fluid" src="{{ section.settings.collection_1_image | img_url: 'master' }}" alt="{{ section.settings.collection_name_1 }}" />
+					{% endif %}
+					<h2 class="oswald my-4 text-white">{{ section.settings.collection_name_1 }}</h2>
+				</a>
+			</div>
+			<div class="col-md-4 column_mobile_tc">
+				<a href="{{ section.settings.collection_2_url }}">
+					<h2 class="oswald my-4 text-white">{{ section.settings.collection_name_2 }}</h2>
+					{% if section.settings.collection_2_image == blank %}
+						<img class="img-fluid text-white" src="https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/sports-wear-store-more-category-img-2.jpg" alt="{{ section.settings.collection_name_2 }}"/>
+					{% else %}
+						<img class="img-fluid text-white" src="{{ section.settings.collection_2_image | img_url: 'master' }}" alt="{{ section.settings.collection_name_2 }}" />
+					{% endif %}
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Trending Wear",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_name",
+      "label": "Section Name",
+      "default": "Trending Sports Wear for"
+    },{
+	  "type":"text",
+	  "id": "collection_name_1",
+	  "label": "Collection 1 Name",
+	  "default": "Men"
+    }, {
+	  "type": "image_picker",
+	  "id": "collection_1_image",
+	  "label": "Collection 1 Image"
+    },{
+      "type":"text",
+      "id": "collection_name_2",
+      "label": "Collection 2 Name",
+      "default": "Women"
+    }, {
+      "type": "image_picker",
+      "id": "collection_2_image",
+      "label": "Collection 2 Image"
+    },
+    {
+      "type": "url",
+      "id": "collection_1_url",
+      "label": "Collection 1 URL"
+    },
+    {
+      "type": "url",
+      "id": "collection_2_url",
+      "label": "Collection 2 URL"
+    }
+  ],
+  "presets": [
+	{
+	  "name": "Trending Catetgory"
+	}
+  ]
+}
+{% endschema %}

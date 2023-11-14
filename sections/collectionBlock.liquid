@@ -1,0 +1,104 @@
+<style>
+  .card-img, .card-img-top{
+    height: 250px;
+    object-fit: cover;
+    transition: all .5s ease-in-out;
+  }
+
+  .card{
+    cursor: pointer;
+  }
+
+  .card-img:hover, .card-img-top:hover {
+    overflow: hidden;
+    scale: 1.1;
+    transition: all .5s ease-in-out;
+  }
+</style>
+
+<div class="container my-5">
+	{% if section.settings.text_align == "left" %}
+		{% assign textStyle = "start" %}
+	{% elsif section.settings.text_align == "center" %}
+		{% assign textStyle = "center" %}
+	{% elsif section.settings.text_align == "right" %}
+		{% assign textStyle = "end" %}
+	{% endif %}
+	<h3 class="oswald text-{{ textStyle }}">Explore Collection</h3>
+	<div class="row mt-4">
+		{% for blocks in section.blocks %}
+			<div class="col-md-4 col-sm-6 mt-3">
+				<div class="card border-0">
+					{% if blocks.settings.collection_image == blank %}
+						<img src="https://images.unsplash.com/photo-1584309832315-39d404eecc77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" class="card-img-top rounded" alt="Collection Image">
+						{% else %}
+						<img src="{{ blocks.settings.collection_image | img_url: 'master' }}" class="card-img-top rounded" alt="Collection Image">
+					{% endif %}
+
+					<div class="card-body p-0 mt-3">
+						<a href="{{ blocks.settings.collection_url }}" class="card-title oswald text-dark fs-4 text-decoration-none">{{ blocks.settings.collection_name }}</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+
+{% schema %}
+ {
+   "name": "Collection Blocks",
+   "max_blocks": 16,
+   "settings": [
+     {
+       "type": "radio",
+       "id": "text_align",
+       "label": "Text Align",
+       "options": [
+         {
+           "value": "left",
+           "label": "Left"
+         },
+         {
+           "value": "center",
+           "label": "Center"
+         },
+         {
+           "value": "right",
+           "label": "Right"
+         }
+       ],
+       "default": "center"
+     }
+   ],
+   "blocks": [
+     {
+       "name": "Collection Blocks",
+       "type": "collection_blocks",
+       "settings": [
+         {
+           "type": "text",
+           "id": "collection_name",
+           "label": "Collection Name",
+           "default": "Face Mask"
+         },
+         {
+           "type": "url",
+           "id": "collection_url",
+           "label": "Collection URL"
+         },
+         {
+           "type": "image_picker",
+           "id": "collection_image",
+           "label": "Collection Image"
+         }
+       ]
+     }
+   ],
+   "presets": [
+     {
+       "name": "Collection Blocks"
+     }
+
+   ]
+ }
+{% endschema %}

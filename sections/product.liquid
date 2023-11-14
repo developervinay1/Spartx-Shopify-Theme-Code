@@ -1,0 +1,28 @@
+<div class="container py-5">
+	<div class="row">
+		<div class="col-md-6">
+			<img src="{{ product.featured_image | img_url: 'master' }}" alt="" class="img-fluid">
+		</div>
+		<div class="col-md-6">
+			<h6 class="oswald text-secondary">Home / {{ product.vendor }} / {{ product.title }}</h6>
+			<h4 class="mt-2">{{ product.title }}</h4>
+			<div class="price_info d-flex justify-content-start gap-3">
+				{% if product.compare_at_price_max > product.price %}
+					<p class="text-decoration-line-through text-secondary oswald">{{ product.compare_at_price_max | money_with_currency }}</p>
+				{% endif %}
+				<p class="text-dark oswald">{{ product.price | money_with_currency }}</p>
+				{% if product.compare_at_price_max > product.price %}
+					<span class="text-danger">
+						{{ product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0'}}% off
+					</span>
+				{% endif %}
+			</div>
+			<p>{{ product.description }}</p>
+			<form method="post" action="/cart/add">
+				<input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+				<input min="1" type="number" id="quantity" name="quantity" value="1" aria-label="Quantity"/>
+				<input type="submit" value="Add to cart" class="btn text-white py-2 px-5" style="background-color: #FB5832" />
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,52 @@
+<div class="container-fluid">
+	<div class="container py-5">
+		<h3 class="fw-bold" style="font-family: 'Oswald'">{{ section.settings.collection_heading }}</h3>
+		<div class="row mt-5">
+			{% paginate collections by section.settings.number_of_products %}
+				{% for collection in collections %}
+					<div class="col-md-6 position-relative mt-1" style="padding: 4px;">
+						{% if collection.image != blank %}
+							<img style="width: 100%" src="{{ collection.image | img_url: 'master' }}" class="img-fluid" alt="{{ collection.title }}" />
+						{% else %}
+							<img style="width: 100%" src="https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/sports-wear-store-category-img-1.jpg" class="img-fluid" alt="{{ collection.title }}" />
+						{% endif %}
+						<a href="{{ collection.url }}" class="btn btn-light py-2 px-5 position-absolute rounded-pill" style="bottom: 30px; left: 40px">
+							{{ collection.title }} <svg xmlns="http://www.w3.org/2000/svg" style="height: 15px;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+							</svg>
+						</a>
+					</div>
+				{% endfor %}
+			{% endpaginate %}
+
+		</div>
+	</div>
+</div>
+
+{% schema %}
+	{
+	  "name": "Category Section",
+	  "settings": [
+	    {
+	      "type": "text",
+	      "id": "collection_heading",
+	      "label": "Section Name",
+	      "default": "Shop by Category"
+        },
+	    {
+	      "type": "range",
+	      "id": "number_of_products",
+	      "label": "Number Of Collections To Display",
+	      "min": 2,
+	      "max": 8,
+	      "step": 1,
+	      "default": 4
+        }
+	  ],
+	  "presets": [
+	    {
+	      "name": "Categories Section"
+        }
+	  ]
+    }
+{% endschema %}

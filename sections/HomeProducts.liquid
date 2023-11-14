@@ -1,0 +1,73 @@
+<style>
+    img.img-fluid.main {
+        height: 250px;
+        object-fit: cover;
+    }
+</style>
+
+<div class="container my-5">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<h3 class="oswald">The Latest Drop</h3>
+		</div>
+		<div class="col-md-6 d-flex justify-content-end align-items-center">
+			<a href="#" class="text-end">Shop All</a>
+		</div>
+
+		<div class="row mt-5">
+			{% for product in section.settings.main_collection.products limit: section.settings.product_count %}
+				<a href="{{ product.url }}" class="col-md-3 col-sm-6 mt-3 text-decoration-none text-dark">
+					<div class="position-relative">
+						{% if product.image == blank %}
+							<img src="{{ product.featured_image | img_url: 'master' }}" class="img-fluid main" alt="">
+						{% else %}
+							{{ 'product-1' | placeholder_svg_tag }}
+						{% endif %}
+						<div class="product-info px-3 mt-3">
+							<h5 class="oswald">{{ product.title }}</h5>
+							<div class="price_info d-flex justify-content-start gap-3">
+								{% if product.compare_at_price_max > product.price %}
+								<p class="text-decoration-line-through text-secondary oswald">{{ product.compare_at_price_max | money_with_currency }}</p>
+								{% endif %}
+								<p class="text-dark oswald">{{ product.price | money_with_currency }}</p>
+								{% if product.compare_at_price_max > product.price %}
+									<span class="position-absolute left-0 top-0 start-10 translate-middle badge rounded-pill bg-danger">
+								        {{ product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0'}}% off
+								  </span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+
+{% schema %}
+	{
+	  "name": "Products",
+	  "settings": [
+	    {
+	      "type": "collection",
+	      "id": "main_collection",
+	      "label": "Choose Collection"
+        }, {
+		  "type": "range",
+		  "id": "product_count",
+		  "label": "Product Count",
+		  "min": 4,
+		  "max": 12,
+		  "step": 1,
+		  "default": 4
+        }
+	  ],
+	  "presets": [
+	    {
+	      "name": "Products Section Home"
+        }
+	  ]
+    }
+{% endschema %}

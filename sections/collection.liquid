@@ -1,0 +1,231 @@
+<style>
+	details[open] .detailIcon{
+		transform: rotate(90deg);
+	}
+
+	details{
+        animation: sweep .5s ease-in-out;
+	}
+
+    details[open] summary ~ * {
+        animation: sweep .5s ease-in-out;
+    }
+
+    @keyframes sweep {
+        0%    {opacity: 0;}
+        100%  {opacity: 1;}
+    }
+</style>
+
+<div class="container my-5">
+	<div class="row d-flex justify-content-between align-items-center">
+		<div class="col-md-6">
+			<h6 class="oswald text-secondary">Home / Shop / {{ collection.title }}</h6>
+		</div>
+		<div class="col-md-6 text-md-end text-lg-end text-center d-flex justify-content-end align-items-center gap-3">
+			<select id="sort-by" class="py-1 px-3">
+				{% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+
+				{% for option in collection.sort_options %}
+					<option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+						{{ option.name }}
+					</option>
+				{% endfor %}
+			</select>
+
+			<button class="btn btn-dark border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#filters" aria-controls="staticBackdrop">
+				<svg xmlns="http://www.w3.org/2000/svg" class="text-light" style="width: 20px;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+				</svg>
+				Filters
+			</button>
+		</div>
+	</div>
+</div>
+
+
+<div class="container mb-5">
+	<div class="row">
+		{% for product in collection.products %}
+			<a href="{{ product.url }}" class="col-md-3 col-sm-6 mt-3 text-decoration-none text-dark">
+				<div class="position-relative">
+					{% if product.image == blank %}
+						<img src="{{ product.featured_image | img_url: 'master' }}" class="img-fluid main" alt="">
+					{% else %}
+						{{ 'product-1' | placeholder_svg_tag }}
+					{% endif %}
+					<div class="product-info px-3 mt-3">
+						<h5 class="oswald">{{ product.title }}</h5>
+						<div class="price_info d-flex justify-content-start gap-3">
+							{% if product.compare_at_price_max > product.price %}
+								<p class="text-decoration-line-through text-secondary oswald">{{ product.compare_at_price_max | money_with_currency }}</p>
+							{% endif %}
+							<p class="text-dark oswald">{{ product.price | money_with_currency }}</p>
+							{% if product.compare_at_price_max > product.price %}
+								<span class="position-absolute left-0 top-0 start-10 translate-middle badge rounded-pill bg-danger">
+								        {{ product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0'}}% off
+								  </span>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</a>
+		{% endfor %}
+	</div>
+
+</div>
+
+{% comment %} Filters Offcanvas Menu {% endcomment %}
+
+<div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="filters" aria-labelledby="staticBackdropLabel">
+	<div class="offcanvas-header">
+		<h5 class="offcanvas-title" id="staticBackdropLabel"><svg xmlns="http://www.w3.org/2000/svg" class="text-dark" style="width: 20px;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+			</svg> <span class="oswald">Filters</span></h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+		<div>
+			<form>
+				{%- for filter in collection.filters -%}
+					<details class="filter-group">
+						<summary class="filter-group-summary d-flex justify-content-between align-items-center px-3 py-3 border mb-1">
+							<div>
+								<span>{{ filter.label }}</span>
+
+								{%- if filter.active_values.size > 0 -%}
+									<span>({{ filter.active_values.size }})</span>
+								{%- endif -%}
+							</div>
+
+							<svg xmlns="http://www.w3.org/2000/svg" style="width: 20px;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="detailIcon">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+							</svg>
+
+						</summary>
+
+						<div class="filter-group-display px-3 my-4">
+							<div class="filter-group-display__header">
+								<span class="filter-group-display__header-selected fw-semibold">{{ filter.active_values.size }} Selected</span>
+
+								{%- if filter.active_values.size > 0 -%}
+									<a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset text-danger" style="margin: 20px;">Reset</a>
+								{%- endif -%}
+							</div>
+
+							{%- case filter.type -%}
+								{%- when 'boolean' or 'list' -%}
+									<ul class="filter-group-display__list">
+										{%- for filter_value in filter.values -%}
+											<li class="filter-group-display__list-item">
+												<label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
+													<input type="checkbox"
+													       name="{{ filter_value.param_name }}"
+													       value="{{ filter_value.value }}"
+													       id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+													       {% if filter_value.active -%}checked{%- endif %}
+														{% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+													>{{ filter_value.label }}</label>
+											</li>
+										{%- endfor -%}
+									</ul>
+
+									<div class="filter-group-display__submit">
+										<input type="submit" value="Apply" class="btn border-0 text-white mt-2" style="background-color: #fb5732;">
+									</div>
+								{%- when 'price_range' -%}
+									<div class="filter-group-display__price-range">
+										<div class="filter-group-display__price-range-from">
+											<span>{{ cart.currency.symbol }}</span>
+
+											<input name="{{ filter.min_value.param_name }}"
+											       id="Filter-{{ filter.min_value.param_name }}"
+													{% if filter.min_value.value -%}
+														value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+													{%- endif %}
+                                                   type="number"
+                                                   placeholder="0"
+                                                   min="0"
+                                                   max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+											>
+
+											<label for="Filter-{{ filter.min_value.param_name }}">From</label>
+										</div>
+										<div class="filter-group-display__price-range-to">
+											<span>{{ cart.currency.symbol }}</span>
+
+											<input name="{{ filter.max_value.param_name }}"
+											       id="Filter-{{ filter.max_value.param_name }}"
+													{% if filter.max_value.value -%}
+														value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+													{%- endif %}
+                                                   type="number"
+                                                   placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                                                   min="0"
+                                                   max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+											>
+
+											<label for="Filter-{{ filter.max_value.param_name }}">To</label>
+										</div>
+									</div>
+
+									<div class="filter-group-display__submit">
+										<input type="submit" value="Apply" class="btn border-0 text-white mt-3" style="background-color: #fb5732;">
+									</div>
+							{%- endcase -%}
+						</div>
+					</details>
+				{%- endfor -%}
+
+				<div class="active-filters mt-3">
+					{%- for filter in collection.filters -%}
+						{%- if filter.type == "price_range" -%}
+							{%- if filter.min_value.value != null or filter.max_value.value != null -%}
+								<a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="active-filters__clear fw-bold text-danger">Clear Filter</a>
+								<a class="active-filters__remove-filter text-danger m-2" href="{{ filter.url_to_remove }}">
+									{%- assign min_value = filter.min_value.value | default: 0 -%}
+									{%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+									{{ min_value | money }} - {{ max_value | money }} X
+								</a>
+							{%- endif -%}
+						{%- else -%}
+							{%- for filter_value in filter.active_values -%}
+								<a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="active-filters__clear fw-bold text-danger">Clear Filter</a>
+								<a class="active-filters__remove-filter text-danger m-2" href="{{ filter_value.url_to_remove }}">
+									{{ filter.label }}: {{ filter_value.label }} X
+								</a>
+							{%- endfor -%}
+						{%- endif %}
+					{%- endfor -%}
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% comment %} Sorting Products Javascript {% endcomment %}
+
+<script>
+    Shopify.queryParams = {};
+
+    // Preserve existing query parameters
+    if (location.search.length) {
+        var params = location.search.substr(1).split('&');
+
+        for (var i = 0; i < params.length; i++) {
+            var keyValue = params[i].split('=');
+
+            if (keyValue.length) {
+                Shopify.queryParams[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
+            }
+        }
+    }
+
+    // Update sort_by query parameter on select change
+    document.querySelector('#sort-by').addEventListener('change', function(e) {
+        var value = e.target.value;
+
+        Shopify.queryParams.sort_by = value;
+        location.search = new URLSearchParams(Shopify.queryParams).toString();
+    });
+</script>
