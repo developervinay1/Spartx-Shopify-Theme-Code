@@ -1,0 +1,436 @@
+{% assign font_weight  = "normal" %}
+{% assign final_menu = linklists[section.settings.header_menu].links %}
+{% assign textStyle = "normal" %}
+
+{% if section.settings.header_color == blank %}
+	{% assign header_color = "white" %}
+	{% else %}
+	{% assign header_color = section.settings.header_color %}
+{% endif %}
+
+{% if section.settings.header_links_color == blank %}
+	{% assign header_menu = "black" %}
+{% else %}
+	{% assign header_menu = section.settings.header_links_color %}
+{% endif %}
+
+{% if section.settings.header_mobile_color == blank %}
+	{% assign header_menu_mobile = "black" %}
+{% else %}
+	{% assign header_menu_mobile = section.settings.header_mobile_color %}
+{% endif %}
+
+{% if section.settings.header_navigation_color == blank %}
+	{% assign header_color_mobile = "white" %}
+{% else %}
+	{% assign header_color_mobile = section.settings.header_navigation_color %}
+{% endif %}
+
+
+<style>
+	.pcHeader{
+		background: {{ header_color }} !important;
+		min-height: 90px !important;
+		margin-bottom: -90px !important;
+	}
+
+	.mobileHeader{
+		display: none;
+        background: {{ header_menu_mobile }} !important;
+        min-height: 90px !important;
+        margin-bottom: -90px !important;
+	}
+
+    .drop_no_icon::after{
+        content: none !important;
+    }
+
+    .mobile_nav_link{
+        color: {{ header_color_mobile }} !important;
+        font-size: {{ section.settings.header_links_size }}px !important;
+    }
+
+	.navLinks{
+		color: {{ header_menu }} !important;
+		font-size: {{ section.settings.header_links_size }}px !important;
+	}
+
+	@media screen and (min-width: 320px) and (max-width: 1120px) {
+		.pcHeader{
+			display: none !important;
+		}
+		.mobileHeader {
+			display: flex !important;
+			min-height: 90px !important;
+		}
+	}
+
+</style>
+
+<nav class="navbar navbar-expand-lg bg-transparent header pcHeader">
+	<div class="container">
+		{% if section.settings.font_weight == "bold" %}
+			{% assign font_weight = "bold" %}
+			{% elsif section.settings.font_weight == "semi_bold" %}
+				{% assign font_weight = "semibold" %}
+			{% else %}
+				{% assign font_weight = "regular" %}
+		{% endif %}
+
+		{% if section.settings.site_logo == blank %}
+			<a class="navbar-brand fw-{{ font_weight }}" href="#">{{ section.settings.site_name }}</a>
+		{% else %}
+			<a href="{{ shop.secure_url }}"><img src="{{ section.settings.site_logo | img_url: 'master' }}" class="img-fluid" style="width: 108px;" alt="Site Logo" /></a>
+		{% endif %}
+
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4" style="margin-left: 10px;">
+			{% for links in final_menu %}
+					{% if links.links != blank %}
+							<ul class="dropdown-menu">
+								{% for childlink in links.links %}
+									<li><a class="dropdown-item" href="#"></a></li>
+								{% endfor %}
+							</ul>
+						</li>
+					{% else %}
+						{% if section.settings.text_style == "normal" %}
+							{% assign textStyle = "normal" %}
+							{% elsif section.settings.text_style == "uppercase" %}
+								{% assign textStyle = "uppercase" %}
+						{% elsif section.settings.text_style == "capitalized" %}
+							{% assign textStyle = "capitalized" %}
+						{% endif %}
+							<li class="nav-item">
+								<a class="nav-link active text-{{ textStyle }} navLinks" aria-current="page"
+								   href="{{ links.url }}">{{ links.title }}</a>
+							</li>
+						{% endif %}
+
+			{% endfor %}
+			</ul>
+		</div>
+		<button class="btn btn-transparent position-relative" data-bs-toggle="offcanvas" data-bs-target="#cart_menu" aria-controls="staticBackdrop">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" style="height: 20px; color: {{ header_menu }} " viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+			</svg>
+			{% if section.settings.bubble_color == blank %}
+				{% assign bubbleColor = "white" %}
+				{% else %}
+				{% assign bubbleColor = section.settings.bubble_color %}
+			{% endif %}
+
+
+			{% if section.settings.bubble_color_background == blank %}
+				{% assign bubbleBGColor = "black" %}
+			{% else %}
+				{% assign bubbleBGColor = section.settings.bubble_color_background %}
+			{% endif %}
+			<span style="background-color: {{ bubbleBGColor }}; color: {{ bubbleColor }}" class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
+				{{ cart.item_count}}
+		    </span>
+		</button>
+		<div class="btn-group mx-2">
+			<button class="btn btn-transparent dropdown-toggle drop_no_icon" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" style="height: 20px; color: {{ header_menu }}; " viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+				</svg>
+			</button>
+			<ul class="dropdown-menu dropdown-menu-end" style="width: 60vw;">
+				<li><a class="dropdown-item" href="#">
+						<form
+								action="{{ routes.search_url }}"
+								class="d-flex"
+								role="search">
+							<input
+									class="form-control me-2"
+									type="text"
+									name="q"
+									placeholder="Search Here"
+									value="{{ search.terms | escape }}">
+						</form>
+					</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+
+{% comment %}Cart Menu PC DESKTOP {% endcomment %}
+
+<div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="cart_menu" aria-labelledby="staticBackdropLabel">
+	<div class="offcanvas-header">
+		<h5 class="offcanvas-title oswald" id="staticBackdropLabel">Cart</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body position-relative">
+		{% form 'cart', cart  %}
+			{% if cart.empty? %}
+				<div class="row">
+					<div class="col-md-6 text-center">
+						<p>No Items In Cart</p>
+					</div>
+					<div class="col-md-6 text-center">
+						<a href="{{ routes.collection_url }}" class="btn btn-danger rounded m-3 position-absolute bottom-0 underline oswald" style="left: 0; right: 0; background-color: #fb5732 !important;">Shop Now</a>
+					</div>
+				</div>
+			{% else %}
+				{% for item in cart.items %}
+					<div class="card my-2">
+						<img src="{{ item.image | img_url: 'master' }}"
+						     class="card-img-top cart_image" alt="...">
+						<div class="card-body">
+							<h5 class="card-title">{{ item.title }}</h5>
+							<p class="card-text">Price: {{ item.price | money }}</p>
+							<p class="card-text">Quantity: {{ item.quantity }}</p>
+							<p class="card-text">Total Price: {{ item.final_line_price | money }}</p>
+							<a class="text-danger" href="{{ item.url_to_remove }}">
+								Remove
+							</a>
+						</div>
+					</div>
+				{% endfor %}
+				<div class="card mt-5">
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item">SubTotal: {{ cart.items_subtotal_price | money }}</li>
+						<li class="list-group-item">Items Count: {{ cart.item_count }}</li>
+						<li class="list-group-item">Total: {{ cart.total_price | money }}</li>
+					</ul>
+					<button type="submit" name="checkout" class="btn btn-dark w-100 mt-3" style="font-family: 'Oswald', sans-serif">Checkout</button>
+				</div>
+			{% endif %}
+		{% endform %}
+	</div>
+</div>
+
+
+
+{% comment %}Mobile Header Code{% endcomment %}
+
+<nav class="navbar navbar-expand-lg bg-transparent header mobileHeader">
+	<div class="container">
+		{% if section.settings.font_weight == "bold" %}
+			{% assign font_weight = "bold" %}
+		{% elsif section.settings.font_weight == "semi_bold" %}
+			{% assign font_weight = "semibold" %}
+		{% else %}
+			{% assign font_weight = "regular" %}
+		{% endif %}
+
+		{% if section.settings.site_logo == blank %}
+			<a class="navbar-brand fw-{{ font_weight }}" href="#">{{ section.settings.site_name }}</a>
+		{% else %}
+			<a href="{{ shop.secure_url }}"><img src="{{ section.settings.site_logo | img_url: 'master' }}" class="img-fluid" style="width: 108px;" alt="Site Logo" /></a>
+		{% endif %}
+
+		<div class="btn-holder">
+			<button class="btn btn-transparent position-relative" data-bs-toggle="offcanvas" data-bs-target="#cart_menu" aria-controls="staticBackdrop">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" style="height: 20px; color: {{ header_color_mobile }} " viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+				</svg>
+				<span style="background-color: {{ bubbleBGColor }}; color: {{ bubbleColor }} " class="position-absolute top-0 start-100 translate-middle badge rounded-pill">
+				{{ cart.item_count}}
+			    <span class="visually-hidden">unread messages</span>
+		    </span>
+			</button>
+			<div class="btn-group mx-2">
+				<button class="btn btn-transparent dropdown-toggle drop_no_icon" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" style="height: 20px; color: {{ header_color_mobile }}; " viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+					</svg>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-end" style="width: 60vw;">
+					<li><a class="dropdown-item" href="#">
+							<form
+									action="{{ routes.search_url }}"
+									class="d-flex"
+									role="search">
+								<input
+										class="form-control me-2"
+										type="text"
+										name="q"
+										placeholder="Search Here"
+										value="{{ search.terms | escape }}">
+							</form>
+						</a></li>
+				</ul>
+			</div>
+			{% if section.settings.mobile_navigation_color_menu == blank %}
+				{% assign menu_Color = "black" %}
+			{% else %}
+				{% assign menu_Color = section.settings.mobile_navigation_color_menu %}
+			{% endif %}
+			<button class="btn" style="background-color: {{ header_color_mobile }}" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
+				<svg xmlns="http://www.w3.org/2000/svg" fill="none" style="height: 20px; color: {{ menu_Color }};" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
+				</svg>
+			</button>
+		</div>
+	</div>
+</nav>
+
+
+{% comment %}OffCanvas Body{% endcomment %}
+
+<div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+	<div class="offcanvas-header">
+		<h5 class="offcanvas-title oswald" id="staticBackdropLabel">
+			{% if section.settings.font_weight == "bold" %}
+				{% assign font_weight = "bold" %}
+			{% elsif section.settings.font_weight == "semi_bold" %}
+				{% assign font_weight = "semibold" %}
+			{% else %}
+				{% assign font_weight = "regular" %}
+			{% endif %}
+
+			{% if section.settings.site_logo_mobile == blank %}
+				<a class="navbar-brand fw-{{ font_weight }}" href="#">{{ section.settings.site_name }}</a>
+			{% else %}
+				<a href="{{ shop.secure_url }}"><img src="{{ section.settings.site_logo_mobile | img_url: 'master' }}" class="img-fluid" style="width: 108px;" alt="Site Logo" /></a>
+			{% endif %}
+		</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body position-relative">
+		{% if section.settings.mobile_navigation_color_menu == blank %}
+			{% assign menu_Color = "black" %}
+			{% else %}
+			{% assign menu_Color = section.settings.mobile_navigation_color_menu %}
+		{% endif %}
+		<div>
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4" style="margin-left: 20px;">
+				{% for links in final_menu %}
+					{% if links.links != blank %}
+						<ul class="dropdown-menu">
+							{% for childlink in links.links %}
+								<li><a class="dropdown-item mobile_nav_link" style=" color: {{ menu_Color }} !important;" href="{{ childlink.url }}">{{ childlink.title }}</a></li>
+							{% endfor %}
+						</ul>
+					{% else %}
+						{% if section.settings.text_style == "normal" %}
+							{% assign textStyle = "normal" %}
+						{% elsif section.settings.text_style == "uppercase" %}
+							{% assign textStyle = "uppercase" %}
+						{% elsif section.settings.text_style == "capitalized" %}
+							{% assign textStyle = "capitalized" %}
+						{% endif %}
+						<li class="nav-item">
+							<a class="nav-link mobile_nav_link active text-{{ textStyle }}" aria-current="page"
+							   href="{{ links.url }}" style="color: {{ menu_Color }} !important;">{{ links.title }}</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+		<div>
+			<a href="{{ routes.collection_url }}" class="btn btn-dark rounded m-3 position-absolute bottom-0 underline oswald" style="left: 0; right: 0;">Contact us</a>
+		</div>
+	</div>
+</div>
+
+
+{% schema %}
+	{
+	  "name": "Header Transparent",
+	  "settings": [
+	    {
+	      "type": "image_picker",
+	      "id": "site_logo",
+	      "label": "Logo"
+	    },
+        {
+          "type": "image_picker",
+          "id": "site_logo_mobile",
+          "label": "Mobile Header Logo Dark Version Required"
+        },
+	    {
+		  "type": "text",
+		  "id":"site_name",
+		  "label": "Site Name",
+		  "default": "Sparta X"
+        }, {
+		  "type": "radio",
+		  "id": "font_weight",
+		  "label": "Logo Font Weight",
+		  "options": [
+		    {
+		      "value": "regular",
+		      "label": "Regular"
+		    },
+		    {
+		      "value": "semi_bold",
+		      "label": "Semi Bold"
+            },
+		    {
+		      "value": "bold",
+		      "label": "Bold"
+            }
+		  ]
+        }, {
+		  "type": "link_list",
+		  "id": "header_menu",
+		  "label": "Menu"
+        }, {
+		  "type": "radio",
+		  "id": "text_style",
+		  "label": "Text Style",
+		  "options": [
+		    {
+		      "value": "normal",
+		      "label": "Normal"
+		    }, {
+			  "value": "uppercase",
+			  "label": "UpperCase"
+            }, {
+			  "value": "capitalized",
+			  "label": "Capitalized"
+            }
+		  ]
+        }, {
+		  "type": "color",
+		  "id": "header_color",
+		  "label": "Header Background Color"
+        }, {
+		  "type": "color",
+		  "id": "header_links_color",
+		  "label": "Header Links Color"
+        }, {
+		  "type": "range",
+		  "id": "header_links_size",
+		  "label": "Navigation Font Size",
+		  "min": 13,
+		  "max": 18,
+		  "step": 1,
+		  "default": 13
+        }, {
+		  "type": "color",
+		  "id": "header_mobile_color",
+		  "label": "Mobile Menu Color"
+        }, {
+		  "type": "color",
+		  "id": "mobile_navigation_color",
+		  "label": "Mobile Menu Links Color"
+        }, {
+		  "type": "color",
+		  "id": "bubble_color",
+		  "label": "Cart Bubble Color"
+        },
+        {
+          "type": "color",
+          "id": "bubble_color_background",
+          "label": "Cart Bubble Color"
+        }, {
+		  "type": "color",
+		  "id": "mobile_navigation_color_menu",
+		  "label": "Mobile Navigation Color"
+        }
+	  ],
+	  "presets": [
+	    {
+	      "name": "Header Transparent"
+        }
+	  ]
+	}
+{% endschema %}
