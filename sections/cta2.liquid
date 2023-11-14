@@ -1,0 +1,74 @@
+{% if section.settings.section_image == blank %}
+	{% assign bgImage = "https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/sports-wear-store-banner-bg-img-2.jpg" %}
+	{% else %}
+	{% assign bgImage = section.settings.section_image | img_url: 'master' %}
+{% endif %}
+
+<div class="container text-start d-flex flex-column gap-5 my-5 justify-content-center px-4" style="min-height: {{ section.settings.cta_section_height }}vh; background-image: url('{{ bgImage }}'); background-size: cover; box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 30%); background-position: center" alt="CTA Section 2 Image">
+	<div class="content_full_mobile" style="width: 30vw" class="py-5 px-2 d-flex flex-column align-items-start gap-5">
+		{% if section.settings.cta_image == blank %}
+			<img src="https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/site-logo.svg" class="img-fluid" alt="cta logo" />
+			{% else %}
+			<img src="{{ section.settings.cta_image | img_url: 'master' }}" class="img-fluid" alt="cta logo" />
+		{% endif %}
+		<div>
+			<h1 class="text-white fw-bold oswald">{{ section.settings.cta_title }}</h1>
+			<p class="text-white mt-2 fw-bold">{{ section.settings.cta_desciption }}</p>
+		</div>
+		<a href="{{ section.settings.btn_url }}" class="btn btn-light py-2 px-5 rounded-pill">{{ section.settings.cta_btn }}</a>
+	</div>
+
+</div>
+
+
+{% schema %}
+ {
+   "name": "Cta Section Left",
+   "settings": [
+     {
+       "type": "image_picker",
+       "id": "section_image",
+       "label": "Section Image"
+     },
+     {
+       "type": "range",
+       "min": 40,
+       "max": 100,
+       "step": 1,
+       "id": "cta_section_height",
+       "default": 57,
+       "label": "Cta Section Height"
+     },
+     {
+       "type": "image_picker",
+       "id": "cta_image",
+       "label": "Logo or Image"
+     }, {
+	   "type": "text",
+	   "id": "cta_title",
+	   "label": "CTA Title",
+	   "default": "Street Ready"
+     }, {
+	   "type": "text",
+	   "id": "cta_desciption",
+	   "label": "CTA Description",
+	   "default": "Cras tristique neque vel justo ultricies faucibus. Mattis ut fermentum."
+     },
+     {
+       "type": "text",
+       "id": "cta_btn",
+       "label": "CTA Button Title",
+       "default": "Shop Now"
+     },{
+	   "type": "url",
+	   "id": "btn_url",
+	   "label": "CTA Button URL"
+     }
+   ],
+   "presets": [
+	{
+	  "name":"Call To Action Left"
+	}
+   ]
+ }
+{% endschema %}

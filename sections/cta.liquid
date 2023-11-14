@@ -1,0 +1,49 @@
+<div class="container">
+	<div class="row position-relative">
+		<div class="col-md-4" style="margin: 0; padding: 0;">
+			<img class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="cta_image_1" src="https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/sports-wear-store-banner-img-1.jpg" />
+		</div>
+		<div class="col-md-4" style="margin: 0; padding: 0;">
+			<img class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="cta_image_1" src="https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/sports-wear-store-banner-img-2.jpg" />
+		</div>
+		<div class="col-md-4" style="margin: 0; padding: 0;">
+			<img class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="cta_image_1" src="https://websitedemos.net/sports-wear-store-04/wp-content/uploads/sites/828/2021/04/sports-wear-store-banner-bg-img.jpg" />
+		</div>
+		<div class="col-md-4 position-absolute d-flex flex-column gap-5 align-items-end" style="bottom: 20px; right: 0; text-align: end;">
+			<h2 class="text-white">Fitness Ready</h2>
+			<p class="text-white">Turpis pharetra amet nibh venenatis nibh nisl id urna, et porta vel, netus dui enim.</p>
+			<a href="{{ section.settings.btn_url }}" class="btn btn-light rounded-pill py-2 px-5">Shop Now</a>
+		</div>
+	</div>
+</div>
+
+
+{% schema %}
+	{
+	  "name": "Call To Action",
+	  "settings": [
+	    {
+	      "type": "text",
+	      "id": "section_heading",
+	      "label": "CTA Title",
+	      "default": "Fitness Ready"
+	    },
+	    {
+	      "type": "text",
+	      "id": "section_messgae",
+	      "label": "CTA Description",
+	      "default": "Turpis pharetra amet nibh venenatis nibh nisl id urna, et porta vel, netus dui enim"
+        },
+	    {
+	      "type": "url",
+	      "id": "btn_url",
+	      "label": "Button Link"
+        }
+	  ],
+	  "presets": [
+	    {
+	      "name": "Call To Action"
+        }
+	  ]
+    }
+{% endschema %}

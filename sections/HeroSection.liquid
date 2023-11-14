@@ -1,0 +1,92 @@
+<div class="container-fluid" style="background-image: url('{{ section.settings.hero_image | img_url: "master" }}'); background-size: cover; background-position: initial; height: 100vh; box-shadow: inset 0 0 0 2000px rgb(0 0 0 / 30%); background-attachment: fixed;">
+	<div class="container d-flex flex-column justify-content-center" style="height: 100%">
+		<div class="bg-light" style="height: 6px; width: 10vw; border-radius: {{ section.settings.bar_radius }}px"></div>
+		<div class="content_full_mobile" style="width: {{ section.settings.hero_content_width }}vw; margin-top: {{ section.settings.content_spacing }}px;">
+			<h1 class="text-white header_mobile_size" style="font-size: {{ section.settings.font_size_hero }}px; font-family: 'Oswald' ">Let's Level Up Your Game</h1>
+			<p class="text-white content_full_mobile" style="width: {{ section.settings.hero_content_width }}vw; max-width: 70%; margin-top: {{ section.settings.content_spacing }}px;">Nam natoque in massa bibendum lacus, et arcu cursus nisl rutrum at tincidunt in sit in massa adipiscing lorem fusce.
+			</p>
+			{% if section.settings.btn_style == "solid" %}
+				<a href="{{ section.settings.hero_btn_url }}" style="margin-top: {{ section.settings.content_spacing }}px;" class="btn btn-light py-2 px-5">Shop Now</a>
+				{% elsif section.settings.btn_style == "solid_rounded" %}
+				<a href="{{ section.setting.hero_btn_url }}" style="margin-top: {{ section.settings.content_spacing }}px;" class="btn btn-light rounded-pill py-2 px-5">Shop Now</a>
+				{% elsif section.settings.btn_style == "outline" %}
+				<a href="{{ section.settings.hero_btn_url }}" style="margin-top: {{ section.settings.content_spacing }}px;" class="btn btn-outline-light py-2 px-5">Shop Now</a>
+				{% elsif section.settings.btn_style == "outline_rounded" %}
+				<a href="{{ section.settings.hero_btn_url }}" style="margin-top: {{ section.settings.content_spacing }}px;" class="btn btn-outline-light rounded-pill py-2 px-5">Shop Now</a>
+			{% endif %}
+		</div>
+
+	</div>
+</div>
+
+
+{% schema %}
+	{
+	  "name": "Hero Section",
+	  "settings": [
+	    {
+	      "type": "image_picker",
+	      "id": "hero_image",
+	      "label": "Hero Section Image"
+	    },
+	    {
+	      "type": "range",
+	      "id": "font_size_hero",
+	      "label": "Font Size",
+	      "min": 16,
+	      "max": 90,
+	      "step": 1,
+	      "default": 72
+	    }, {
+		  "type": "range",
+		  "id": "hero_content_width",
+		  "label": "Content Width",
+		  "min": 30,
+		  "max": 100,
+		  "step": 1,
+		  "default": 50
+        }, {
+		  "type": "number",
+		  "id": "bar_radius",
+		  "label": "Bar Radius",
+		  "default": 100
+        }, {
+          "type": "range",
+          "id": "content_spacing",
+          "label": "Content Spacing",
+          "min": 30,
+          "max": 100,
+          "step": 1,
+          "default": 50
+        },{
+		  "type": "radio",
+		  "id": "btn_style",
+		  "label": "Button Style",
+		  "options": [
+		    {
+		      "value": "solid",
+		      "label": "Solid"
+            }, {
+			  "value": "outline",
+			  "label": "outline"
+            }, {
+			  "value": "solid_rounded",
+			  "label": "Solid Rounded"
+            }, {
+			  "value": "outline_rounded",
+			  "label": "Outline Rounded"
+            }
+		  ]
+        },{
+		  "type": "url",
+		  "id": "hero_btn_url",
+		  "label": "Button URL"
+        }
+	  ],
+	  "presets": [
+	    {
+	      "name": "Hero Section"
+        }
+	  ]
+    }
+{% endschema %}
